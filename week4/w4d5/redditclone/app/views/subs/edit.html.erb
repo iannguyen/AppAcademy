@@ -1,0 +1,22 @@
+<h1>Modify a New Sub</h1>
+
+<form action="<%= sub_url(@sub) %>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="hidden" name="authenticity_token" value= "<%= form_authenticity_token %>">
+
+  <label for="title">Title</label>
+  <br>
+    <input type="string" name="sub[title]" id="title" value=" <%= @sub.title %>">
+    <br>
+    <br>
+  <label for="description">Description</label>
+    <br>
+    <textarea name="sub[description]" rows="8" cols="40" id="description"><%= @sub.description %>
+    </textarea>
+  <br>
+
+  <br>
+  <input type="submit" value="Upload Sub">
+
+</form>
+  <%= link_to "Back to All Subs", subs_url %>

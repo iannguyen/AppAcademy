@@ -1,0 +1,25 @@
+<h4>Edit Post for <%= @post.title %> </h4>
+
+<form action="<%= post_url(@post) %>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="hidden" name="post[sub_id]">
+  <input type="hidden" name="authenticity_token" value= "<%= form_authenticity_token %>">
+
+  <label for="title">Title</label>
+  <br>
+    <input type="string" name="post[title]" id="title" value="<%= @post.title %>">
+    <br>
+    <label for="post_url">URL</label>
+    <br>
+    <input type="string" name="post[url]" id="post_url" value="<%= @post.url %>">
+    <br>
+  <label for="content">content</label>
+    <br>
+    <textarea name="post[content]" rows="8" cols="40" id="content"><%= @post.content %></textarea>
+  <br>
+
+  <br>
+  <input type="submit" value="POST!">
+
+</form>
+  <!-- <%= link_to "back to subs", subs_url %> -->

@@ -1,0 +1,17 @@
+<h1>All Subs</h1>
+<table style="text-align:center">
+  <tr>
+    <th> Sub Title: </th>
+    <th> Created by: </th>
+  </tr>
+  <% @subs.each do |sub|  %>
+  <tr>
+    <td style="padding-right:50px; padding-left:50px "> <%= link_to sub.title, sub_url(sub) %></td>
+    <td style="padding-right:50px; padding-left:50px "> <%= sub.moderator.username %></td>
+  </tr>
+  <% end %>
+</table>
+
+<br><br>
+
+  <%= button_to "Create New Sub", new_sub_url, method: :get %>
