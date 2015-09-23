@@ -9,6 +9,7 @@ module Phase5
     #
     # You haven't done routing yet; but assume route params will be
     # passed in as a hash to `Params.new` as below:
+
     def initialize(req, route_params = {})
       route_params.merge!(parse_www_encoded_form(req.query_string)) if req.query_string
       route_params.merge!(parse_www_encoded_form(req.body)) if req.body
@@ -16,7 +17,7 @@ module Phase5
     end
 
     def [](key)
-      @params[key]
+      @params[key.to_sym] || @params[key.to_s]
     end
 
     # this will be useful if we want to `puts params` in the server log
@@ -32,42 +33,28 @@ module Phase5
     # user[address][street]=main&user[address][zip]=89436
     # should return
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
+
     def parse_www_encoded_form(www_encoded_form)
       decoded = URI::decode_www_form(www_encoded_form)
-      hash = Hash.new
-      decoded.each { |pair| hash[parse_key(pair.first)] = pair.last }
-      arr = []
-      hash.each { |key, value| arr << nested_keys(key, value) }
-      left = arr.first
-      right = arr.last
-      deep_merge(left, right)
-    end
-
-    def nested_keys(keys, value = nil)
-      return value if keys.empty?
-      hash = Hash.new
-      primary = keys.shift
-      hash[primary] = nested_keys(keys, value)
-      hash
-    end
-
-    def parse_key(key)
-      key.split(/\]\[|\[|\]/)
-    end
-
-    def deep_merge(hash1, hash2)
-      hash1.keys.each do |key|
-        if hash1[key].is_a? Hash
-          hash2[key] = deep_merge(hash1[key], hash2[key])
-        else
-          hash2[key] ||= hash1[key]
-        end
+      decoded.map! do |pair|
+        pair = parse_key(pair.first), pair.last
       end
-      return hash2
+      params = {}
+      decoded.each do |pair|
+        current = params
+        keys = pair.first
+        keys[0..-2].each do |key|
+          current[key] ||= {}
+          current = current[key]
+        end
+      current[keys.last] ||= pair.last
+      end
+      params
     end
 
     # this should return an array
     # user[address][street] should return ['user', 'address', 'street']
+
     def parse_key(key)
       key.split(/\]\[|\[|\]/)
     end
@@ -77,3 +64,39 @@ end
 # write method takes each key a parameter
 # return nested hash { 'user' => { 'address' => { 'street' => nil }}}
 # step 2 assign nil a value
+
+  # Previous params nested hash solution
+
+# def parse_www_encoded_form(www_encoded_form)
+#   decoded = URI::decode_www_form(www_encoded_form)
+#   hash = Hash.new
+#   decoded.each { |pair| hash[parse_key(pair.first)] = pair.last }
+#   arr = []
+#   hash.each { |key, value| arr << nested_keys(key, value) }
+#   left = arr.first
+#   right = arr.last
+#   deep_merge(left, right)
+# end
+#
+# def nested_keys(keys, value = nil)
+#   return value if keys.empty?
+#   hash = Hash.new
+#   primary = keys.shift
+#   hash[primary] = nested_keys(keys, value)
+#   hash
+# end
+#
+# def parse_key(key)
+#   key.split(/\]\[|\[|\]/)
+# end
+#
+# def deep_merge(hash1, hash2)
+#   hash1.keys.each do |key|
+#     if hash1[key].is_a? Hash
+#       hash2[key] = deep_merge(hash1[key], hash2[key])
+#     else
+#       hash2[key] ||= hash1[key]
+#     end
+#   end
+#   return hash2
+# end
