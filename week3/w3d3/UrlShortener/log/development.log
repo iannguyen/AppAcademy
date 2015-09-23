@@ -1,0 +1,150 @@
+  [1m[36m (1.8ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (1.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateUsers (20150909221647)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /Users/appacademy/Desktop/w3d3/UrlShortener/db/migrate/20150909221647_create_users.rb:5)
+  [1m[35m (0.5ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (1.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150909221647"]]
+  [1m[36m (4.7ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.4ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateShortenedUrls (20150909222417)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.6ms)[0m  [1mCREATE TABLE "shortened_urls" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "long_url" varchar NOT NULL, "short_url" varchar NOT NULL, "submitter_id" integer NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_shortened_urls_on_submitter_id" ON "shortened_urls" ("submitter_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+
+  [1m[36m (1.3ms)[0m  [1mCREATE UNIQUE INDEX "index_shortened_urls_on_short_url" ON "shortened_urls" ("short_url")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150909222417"]]
+  [1m[36m (18.2ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[36mShortenedUrl Exists (16.4ms)[0m  [1mSELECT  1 AS one FROM "shortened_urls" WHERE "shortened_urls"."id" = ? LIMIT 1[0m  [["id", 0]]
+  [1m[36mActiveRecord::SchemaMigration Load (23.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (23.8ms)[0m  INSERT INTO "users" ("email", "created_at", "updated_at") VALUES (?, ?, ?)  [["email", "matt@example.com"], ["created_at", "2015-09-09 23:24:10.325431"], ["updated_at", "2015-09-09 23:24:10.325431"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("email", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["email", "ian@example.com"], ["created_at", "2015-09-09 23:24:16.522101"], ["updated_at", "2015-09-09 23:24:16.522101"]]
+  [1m[35m (1.0ms)[0m  commit transaction
+  [1m[36mShortenedUrl Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "shortened_urls" WHERE "shortened_urls"."id" = ? LIMIT 1[0m  [["id", 3]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mShortenedUrl Exists (11.8ms)[0m  [1mSELECT  1 AS one FROM "shortened_urls" WHERE "shortened_urls"."short_url" = '3QDcRenBiZwLD2PE6HuiBQ' LIMIT 1[0m
+  [1m[35mShortenedUrl Exists (0.2ms)[0m  SELECT  1 AS one FROM "shortened_urls" WHERE "shortened_urls"."long_url" = 'http://www.google.com' LIMIT 1
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "shortened_urls" ("submitter_id", "long_url", "short_url") VALUES (?, ?, ?)[0m  [["submitter_id", 1], ["long_url", "http://www.google.com"], ["short_url", "3QDcRenBiZwLD2PE6HuiBQ"]]
+  [1m[35m (1.2ms)[0m  commit transaction
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1[0m
+  [1m[35mShortenedUrl Load (0.2ms)[0m  SELECT "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  [["submitter_id", 1]]
+  [1m[36mShortenedUrl Load (0.1ms)[0m  [1mSELECT "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?[0m  [["submitter_id", 2]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateVisits (20150909233216)
+  [1m[35m (0.1ms)[0m  begin transaction
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /Users/appacademy/Desktop/w3d3/UrlShortener/db/migrate/20150909233216_create_visits.rb:6)
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "visits" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "shortened_url_id" integer NOT NULL, "user_id" integer NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150909233216"]]
+  [1m[36m (16.9ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_short_url' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shortened_urls_on_submitter_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mShortenedUrl Load (0.3ms)[0m  SELECT "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  [["submitter_id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mShortenedUrl Load (0.2ms)[0m  SELECT  "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  ORDER BY "shortened_urls"."id" ASC LIMIT 1  [["submitter_id", 1]]
+  [1m[36mShortenedUrl Load (0.2ms)[0m  [1mSELECT  "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  ORDER BY "shortened_urls"."id" ASC LIMIT 1[0m  [["submitter_id", 1]]
+  [1m[35mShortenedUrl Load (0.5ms)[0m  SELECT  "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  ORDER BY "shortened_urls"."id" ASC LIMIT 1  [["submitter_id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mShortenedUrl Load (0.4ms)[0m  SELECT "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  [["submitter_id", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mShortenedUrl Load (0.3ms)[0m  SELECT "shortened_urls".* FROM "shortened_urls" WHERE "shortened_urls"."submitter_id" = ?  [["submitter_id", 1]]
