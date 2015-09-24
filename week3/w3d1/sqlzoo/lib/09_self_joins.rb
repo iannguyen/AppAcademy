@@ -17,18 +17,36 @@ require_relative './sqlzoo.rb'
 def num_stops
   # How many stops are in the database?
   execute(<<-SQL)
+  SELECT
+    COUNT(*)
+  FROM
+    stops
   SQL
 end
 
 def craiglockhart_id
   # Find the id value for the stop 'Craiglockhart'.
   execute(<<-SQL)
+  SELECT
+    stops.id
+  FROM
+    stops
+  WHERE
+    name = 'Craiglockhart'
   SQL
 end
 
 def lrt_stops
   # Give the id and the name for the stops on the '4' 'LRT' service.
   execute(<<-SQL)
+  SELECT
+    id, name
+  FROM
+    stops
+  JOIN
+    routes ON routes.stop_id = stops.id
+  WHERE
+    routes.num = '4' AND routes.company = 'LRT'
   SQL
 end
 
@@ -51,6 +69,18 @@ def connecting_routes
   # that link these stops have a count of 2. Add a HAVING clause to restrict
   # the output to these two routes.
   execute(<<-SQL)
+  SELECT
+    company,
+    num,
+    COUNT(*)
+  FROM
+    routes
+  WHERE
+    stop_id = 149 OR stop_id = 53
+  GROUP BY
+    company, num
+  HAVING
+    count(*) = 2
   SQL
 end
 
@@ -73,6 +103,17 @@ def cl_to_lr
   # Craiglockhart, without changing routes. Change the query so that it
   # shows the services from Craiglockhart to London Road.
   execute(<<-SQL)
+  SELECT
+    a.company,
+    a.num,
+    a.stop_id AS start,
+    b.stop_id AS destination
+  FROM
+    routes a
+  JOIN
+    routes b ON (a.company = b.company AND a.num = b.num)
+  WHERE
+    a.stop_id = 53 AND b.stop_id = 149
   SQL
 end
 
@@ -100,6 +141,21 @@ def cl_to_lr_by_name
   # number. Change the query so that the services between 'Craiglockhart' and
   # 'London Road' are shown.
   execute(<<-SQL)
+  SELECT
+    a.company,
+    a.num,
+    stopa.name,
+    stopb.name
+  FROM
+    routes a
+  JOIN
+    routes b ON (a.company = b.company AND a.num = b.num)
+  JOIN
+    stops stopa ON (a.stop_id = stopa.id)
+  JOIN
+    stops stopb ON (b.stop_id = stopb.id)
+  WHERE
+    stopa.name = 'Craiglockhart' AND stopb.name = 'London Road'
   SQL
 end
 
@@ -107,6 +163,16 @@ def haymarket_and_leith
   # Give the company and num of the services that connect stops
   # 115 and 137 ('Haymarket' and 'Leith')
   execute(<<-SQL)
+  SELECT
+    a.company, a.num
+  FROM
+    routes a
+  JOIN
+    routes b ON (a.company = b.company AND a.num = b.num)
+  WHERE
+    a.stop_id = 115 AND b.stop_id = 137
+  GROUP BY
+    a.company, a.num
   SQL
 end
 
@@ -114,6 +180,20 @@ def craiglockhart_and_tollcross
   # Give the company and num of the services that connect stops
   # 'Craiglockhart' and 'Tollcross'
   execute(<<-SQL)
+  SELECT
+    a.company, a.num
+  FROM
+    routes a
+  join
+    routes b ON a.company = b.company AND a.num = b.num
+  join
+    stops astops ON astops.id = a.stop_id
+  join
+    stops bstops ON bstops.id = b.stop_id
+  WHERE
+    astops.name = 'Craiglockhart' AND bstops.name = 'Tollcross'
+  GROUP BY
+    a.company, a.num
   SQL
 end
 
@@ -122,6 +202,18 @@ def start_at_craiglockhart
   # by taking one bus, including 'Craiglockhart' itself. Include the stop name,
   # as well as the company and bus no. of the relevant service.
   execute(<<-SQL)
+  SELECT
+    bstops.name, b.company, b.num
+  FROM
+    routes a
+  join
+    routes b ON a.company = b.company AND a.num = b.num
+  join
+    stops astops ON astops.id = a.stop_id
+  join
+    stops bstops ON bstops.id = b.stop_id
+  WHERE
+    astops.name = 'Craiglockhart'
   SQL
 end
 
@@ -130,5 +222,23 @@ def craiglockhart_to_sighthill
   # Sighthill. Show the bus no. and company for the first bus, the name of the
   # stop for the transfer, and the bus no. and company for the second bus.
   execute(<<-SQL)
+  SELECT
+    a.num, a.company, cstops.name, b.num, b.company
+  FROM
+    routes a
+  join
+    routes b ON a.company = b.company AND a.num = b.num
+  join
+    routes c ON b.company = c.company AND b.num = c.num
+  join
+    stops cstops ON cstops.id = a.stop_id
+  join
+    stops astops ON astops.id = a.stop_id
+  join
+    stops bstops ON bstops.id = b.stop_id
+  where
+    astops.name = 'Craiglockhart' --AND bstops.name = 'Sighthill'
+  GROUP BY
+    a.num, a.company, cstops.name, b.num, b.company
   SQL
 end

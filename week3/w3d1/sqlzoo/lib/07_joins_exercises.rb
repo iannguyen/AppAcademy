@@ -43,13 +43,13 @@ def ford_films
   SELECT
     title
   FROM
-    movies
+    movies m
   JOIN
-    castings ON movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
-  WHERE
-    actors.name = 'Harrison Ford'
+    actors a ON c.actor_id = a.id
+  where
+    name = 'Harrison Ford'
   SQL
 end
 
@@ -61,14 +61,13 @@ def ford_supporting_films
   SELECT
     title
   FROM
-    movies
+    movies m
   JOIN
-    castings ON movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
-  WHERE
-    castings.ord <> 1 AND actors.name = 'Harrison Ford'
-
+    actors a ON c.actor_id = a.id
+  where
+    c.ord <> 1 AND name = 'Harrison Ford'
   SQL
 end
 
@@ -76,15 +75,16 @@ def films_and_stars_from_sixty_two
   # List the title and leading star of every 1962 film.
   execute(<<-SQL)
   SELECT
-    title, name
+    m.title, a.name
   FROM
-    movies
+    movies m
   JOIN
-    castings ON movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
-  WHERE
-    castings.ord = 1 AND movies.yr = 1962
+    actors a ON c.actor_id = a.id
+  where
+    m.yr = 1962 and c.ord = 1
+
   SQL
 end
 
@@ -93,19 +93,19 @@ def travoltas_busiest_years
   # number of movies he made for any year in which he made at least 2 movies.
   execute(<<-SQL)
   SELECT
-    yr, count(title)
+    yr, COUNT(title)
   FROM
-    movies
+    movies m
   JOIN
-    castings on movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
+    actors a ON c.actor_id = a.id
   WHERE
-    actors.name = 'John Travolta'
+    a.name = 'John Travolta'
   GROUP BY
     yr
   HAVING
-    count(title) >= 2
+    COUNT(title) >= 2
   SQL
 end
 
@@ -113,28 +113,33 @@ def andrews_films_and_leads
   # List the film title and the leading actor for all of the films 'Julie
   # Andrews' played in.
   execute(<<-SQL)
-    SELECT
-      title, name
-    FROM
+  SELECT
+  DISTINCT  title, SA.name
+  FROM
+    movies m
+  JOIN
+    castings c ON m.id = c.movie_id
+  JOIN
+    actors SA ON c.actor_id = SA.id
+  where
+    c.ord = 1 AND m.title IN (
+      SELECT
+      title
+      FROM
       movies
-    JOIN
-      castings on movies.id = castings.movie_id
-    JOIN
-      actors ON actors.id = castings.actor_id
-    WHERE
-      castings.ord = 1
-      AND title IN (
-        SELECT
-          title
-        FROM
-          movies
-          JOIN
-            castings on movies.id = castings.movie_id
-          JOIN
-            actors ON actors.id = castings.actor_id
-          WHERE
-            actors.name = 'Julie Andrews'
-      )
+      JOIN
+        castings c ON m.id = c.movie_id
+      JOIN
+        actors SA ON c.actor_id = SA.id
+      WHERE
+        SA.name = 'Julie Andrews'
+    )
+  -- JOIN
+  --   castings JA ON JA.actor_id = SA.id
+  -- JOIN
+  --   actors JAA ON JAA.id = JA.actor_id
+  -- where
+  --   c.ord = 1 AND JAA.name = 'Julie Andrews'
   SQL
 end
 
@@ -145,17 +150,17 @@ def prolific_actors
   SELECT
     name
   FROM
-    movies
+    movies m
   JOIN
-    castings on movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
+    actors SA ON c.actor_id = SA.id
   WHERE
-    castings.ord = 1
+    c.ord = 1
   GROUP BY
-    actors.id
+    name
   HAVING
-    COUNT(castings.movie_id) >= 15
+    COUNT(title) >= 15
   ORDER BY
     name
   SQL
@@ -166,19 +171,19 @@ def films_by_cast_size
   # in the cast (descending), then by title (ascending).
   execute(<<-SQL)
   SELECT
-    title, COUNT(actor_id)
+    title, COUNT(name)
   FROM
-    movies
+    movies m
   JOIN
-    castings ON movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
+    actors SA ON c.actor_id = SA.id
   WHERE
-    movies.yr = 1978
+    yr = 1978
   GROUP BY
-    movies.id
+    title
   ORDER BY
-    COUNT(actor_id) DESC, title ASC
+    COUNT(name) DESC, title
   SQL
 end
 
@@ -188,16 +193,23 @@ def colleagues_of_garfunkel
   SELECT
     name
   FROM
-    movies
+    movies m
   JOIN
-    castings ON movies.id = castings.movie_id
+    castings c ON m.id = c.movie_id
   JOIN
-    actors ON actors.id = castings.actor_id
+    actors SA ON c.actor_id = SA.id
   WHERE
-    actors.name <> 'Art Garfunkel'
-  GROUP BY
-    movies
-  HAVING
-    actors.name = 'Art Garfunkel'
+    title IN (
+      SELECT
+      title
+      FROM
+        movies m
+      JOIN
+        castings c ON m.id = c.movie_id
+      JOIN
+        actors SA ON c.actor_id = SA.id
+      where
+        name = 'Art Garfunkel'
+    ) AND name NOT EQUAL 'Art Garfunkel'
   SQL
 end

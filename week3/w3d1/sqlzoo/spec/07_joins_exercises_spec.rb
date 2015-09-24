@@ -79,7 +79,7 @@ describe "JOIN exercises" do
   end
 
   describe "prolific_actors" do
-    it "selects and orders the actors who have had more than 15 starring roles" do
+    it "selects and orders the actors who have had at least 15 starring roles" do
       expect(prolific_actors).to eq([
         ["Al Pacino"],
         ["Arnold Schwarzenegger"],

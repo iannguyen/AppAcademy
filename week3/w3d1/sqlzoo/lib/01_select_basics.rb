@@ -23,12 +23,12 @@ end
 
 def select_population_of_germany
   execute(<<-SQL)
-    SELECT
-      population
-    FROM
-      countries
-    WHERE
-      name = 'Germany'
+  SELECT
+    population
+  FROM
+    countries
+  WHERE
+    name = 'Germany'
   SQL
 end
 
@@ -36,12 +36,12 @@ def per_capita_gdp
   # Show the name and per capita gdp (gdp/population) for each country where
   # the area is over 5,000,000 km^2
   execute(<<-SQL)
-  SELECT
-    name, gdp/population
-  FROM
-    countries
-  WHERE
-    area > 5000000
+    SELECT
+      name, gdp/population
+    FROM
+      countries
+    WHERE
+      area > 5000000
   SQL
 end
 
@@ -74,11 +74,11 @@ end
 def starts_with_g
   # Show each country that begins with the letter G
   execute(<<-SQL)
-  SELECT
+    SELECT
     name
-  FROM
+    FROM
     countries
-  WHERE
+    WHERE
     name LIKE 'G%'
   SQL
 end

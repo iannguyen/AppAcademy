@@ -26,14 +26,14 @@ require_relative './sqlzoo.rb'
 def alison_artist
   # Select the name of the artist who recorded the song 'Alison'.
   execute(<<-SQL)
-  SELECT
+  Select
     artist
   FROM
     albums
-  JOIN
-    tracks ON albums.asin = tracks.album
+  join
+    tracks ON tracks.album = albums.asin
   WHERE
-    song = 'Alison'
+    tracks.song = 'Alison'
   SQL
 end
 
@@ -43,11 +43,11 @@ def exodus_artist
   SELECT
     artist
   FROM
-    albums
+    albums a
   JOIN
-    tracks ON albums.asin = tracks.album
+    tracks t ON t.album = a.asin
   WHERE
-    song = 'Exodus'
+    t.song = 'Exodus'
   SQL
 end
 
@@ -55,13 +55,16 @@ def blur_songs
   # Select the `song` for each `track` on the album `Blur`.
   execute(<<-SQL)
   SELECT
-    song
+    tracks.song
   FROM
-    albums
+    tracks
   JOIN
-    tracks ON albums.asin = tracks.album
+    albums ON tracks.album = albums.asin
   WHERE
     albums.title = 'Blur'
+  -- GROUP BY
+  -- HAVING
+  -- ORDER BY
   SQL
 end
 
@@ -71,17 +74,17 @@ def heart_tracks
   # the number of such tracks, then by album title.
   execute(<<-SQL)
   SELECT
-    albums.title, COUNT(song)
+    albums.title, COUNT(tracks.song)
   FROM
-    albums
+    tracks
   JOIN
-    tracks ON albums.asin = tracks.album
+    albums ON tracks.album = albums.asin
   WHERE
-    'Heart%' IN (song)
+    tracks.song LIKE '%Heart%'
   GROUP BY
     albums.title
   ORDER BY
-    COUNT(song), title
+    COUNT(tracks.song) DESC, albums.title
   SQL
 end
 
@@ -89,6 +92,14 @@ def title_tracks
   # A 'title track' has a `song` that is the same as its album's `title`. Select
   # the names of all the title tracks.
   execute(<<-SQL)
+  SELECT
+    tracks.song
+  FROM
+    tracks
+  JOIN
+    albums ON tracks.album = albums.asin
+  where
+    tracks.song = albums.title
   SQL
 end
 
@@ -96,6 +107,14 @@ def eponymous_albums
   # An 'eponymous album' has a `title` that is the same as its recording
   # artist's name. Select the titles of all the eponymous albums.
   execute(<<-SQL)
+  SELECT
+    albums.title
+  FROM
+    albums
+  -- JOIN
+  --   tracks ON tracks.album = albums.asin
+  WHERE
+    albums.title = albums.artist
   SQL
 end
 
@@ -103,6 +122,16 @@ def song_title_counts
   # Select the song names that appear on more than two albums. Also select the
   # COUNT of times they show up.
   execute(<<-SQL)
+    SELECT
+      tracks.song, COUNT(tracks.song)
+    FROM
+      tracks
+    join
+      albums ON tracks.album = albums.asin
+    GROUP BY
+      tracks.song
+    HAVING
+      COUNT(tracks.song) > 2
   SQL
 end
 
@@ -111,6 +140,16 @@ def best_value
   # pence. Find the good value albums - show the title, the price and the number
   # of tracks.
   execute(<<-SQL)
+    SELECT
+      a.title, a.price, COUNT(t.song)
+    FROM
+      albums a
+    JOIN
+      tracks t ON a.asin = t.album
+    GROUP BY
+      a.asin
+    HAVING
+      a.price/COUNT(t.song) < 0.50
   SQL
 end
 
@@ -119,12 +158,38 @@ def top_track_counts
   # tracks. List the top 10 albums. Select both the album title and the track
   # count, and order by both track count and title (descending).
   execute(<<-SQL)
+  SELECT
+    a.title, COUNT(t.song)
+  FROM
+    albums a
+  JOIN
+    tracks t ON a.asin = t.album
+  GROUP BY
+    a.asin
+  ORDER BY
+    COUNT(t.song) DESC, a.title DESC
+  LIMIT 10
   SQL
 end
 
-def rock_superstars
   # Select the artist who has recorded the most rock albums, as well as the
   # number of albums. HINT: use LIKE '%Rock%' in your query.
+def rock_superstars
+  execute(<<-SQL)
+  SELECT
+    albums.artist, COUNT(DISTINCT albums.asin)
+  FROM
+    albums
+  JOIN
+    styles ON albums.asin = styles.album
+  WHERE
+    style LIKE '%Rock%'
+  GROUP BY
+    albums.artist
+  ORDER BY
+    COUNT(albums.asin) DESC
+  LIMIT 1
+  SQL
 end
 
 def expensive_tastes
