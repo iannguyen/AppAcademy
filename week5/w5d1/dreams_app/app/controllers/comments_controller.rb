@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to :back
     else
-      flash[:errors] = "AHHH"
+      flash[:errors] = 'AHHH'
       redirect_to :back
     end
   end

@@ -19,9 +19,9 @@ class Game
     position = parsed[1]
     action == 'R' ? board.reveal(position) : board.flag(position)
     if action == 'R' && board[*position].revealed
-      puts "Position already revealed."
+      puts 'Position already revealed.'
     elsif action == 'F' && board[*position].value.is_a?(Integer)
-      puts "Can only flag unrevealed positions."
+      puts 'Can only flag unrevealed positions.'
     end
   end
 

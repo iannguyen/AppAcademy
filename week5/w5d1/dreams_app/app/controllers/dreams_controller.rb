@@ -9,7 +9,7 @@ class DreamsController < ApplicationController
     if @dream.save
       redirect_to dream_url(@dream)
     else
-      flash.now[:errors] = ["!NIGHTMARE!"]
+      flash.now[:errors] = ['!NIGHTMARE!']
       render :new
     end
   end
@@ -27,7 +27,7 @@ class DreamsController < ApplicationController
     if @dream.update(dream_params)
       redirect_to dream_url(@dream)
     else
-      flash.now[:errors] = ["asdfadsfajdfkl;adsfjas;dkf"]
+      flash.now[:errors] = ['asdfadsfajdfkl;adsfjas;dkf']
       render :edit
     end
   end

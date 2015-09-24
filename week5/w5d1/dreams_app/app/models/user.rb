@@ -20,9 +20,7 @@ class User < ActiveRecord::Base
 
   def reset_session_token!
     token = User.generate_token
-    while User.exists?(session_token: token)
-      token = User.generate_token
-    end
+    token = User.generate_token while User.exists?(session_token: token)
     self.session_token = token
     save!
     token

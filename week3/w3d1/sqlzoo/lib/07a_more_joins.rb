@@ -172,8 +172,8 @@ def top_track_counts
   SQL
 end
 
-  # Select the artist who has recorded the most rock albums, as well as the
-  # number of albums. HINT: use LIKE '%Rock%' in your query.
+# Select the artist who has recorded the most rock albums, as well as the
+# number of albums. HINT: use LIKE '%Rock%' in your query.
 def rock_superstars
   execute(<<-SQL)
   SELECT

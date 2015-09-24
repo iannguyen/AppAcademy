@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       login!(@user)
       redirect_to dreams_url
     else
-      flash.now[:errors] = ["GIVE UP"]
+      flash.now[:errors] = ['GIVE UP']
       render :new
     end
   end
@@ -19,5 +19,4 @@ class SessionsController < ApplicationController
   def destroy
     logout!
   end
-
 end
