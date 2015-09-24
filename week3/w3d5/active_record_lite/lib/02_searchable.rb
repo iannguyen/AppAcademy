@@ -9,7 +9,6 @@ module Searchable
     query = DBConnection.execute(<<-SQL, *value)
       SELECT * FROM #{self.table_name} WHERE #{fill_ins}
     SQL
-    debugger
     parse_all(query)
   end
 end
