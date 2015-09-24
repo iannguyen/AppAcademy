@@ -18,7 +18,7 @@ module Phase2
     def redirect_to(url)
       @res.header['location'] = url
       @res.status = 302
-      raise if already_built_response?
+      fail if already_built_response?
       @already_built_response = true
     end
 
@@ -28,7 +28,7 @@ module Phase2
     def render_content(content, content_type)
       @res.body = content
       @res.content_type = content_type
-      raise if already_built_response?
+      fail if already_built_response?
       @already_built_response = true
     end
   end

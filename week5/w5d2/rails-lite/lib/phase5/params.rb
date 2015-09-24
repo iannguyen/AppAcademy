@@ -25,9 +25,10 @@ module Phase5
       @params.to_s
     end
 
-    class AttributeNotFoundError < ArgumentError; end;
+    class AttributeNotFoundError < ArgumentError; end
 
     private
+
     # this should return deeply nested hash
     # argument format
     # user[address][street]=main&user[address][zip]=89436
@@ -35,10 +36,8 @@ module Phase5
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
 
     def parse_www_encoded_form(www_encoded_form)
-      decoded = URI::decode_www_form(www_encoded_form)
-      decoded.map! do |pair|
-        pair = parse_key(pair.first), pair.last
-      end
+      decoded = URI.decode_www_form(www_encoded_form)
+      decoded.map! { |pair| pair = parse_key(pair.first), pair.last }
       params = {}
       decoded.each do |pair|
         current = params
@@ -47,7 +46,7 @@ module Phase5
           current[key] ||= {}
           current = current[key]
         end
-      current[keys.last] ||= pair.last
+        current[keys.last] ||= pair.last
       end
       params
     end
@@ -60,43 +59,3 @@ module Phase5
     end
   end
 end
-
-# write method takes each key a parameter
-# return nested hash { 'user' => { 'address' => { 'street' => nil }}}
-# step 2 assign nil a value
-
-  # Previous params nested hash solution
-
-# def parse_www_encoded_form(www_encoded_form)
-#   decoded = URI::decode_www_form(www_encoded_form)
-#   hash = Hash.new
-#   decoded.each { |pair| hash[parse_key(pair.first)] = pair.last }
-#   arr = []
-#   hash.each { |key, value| arr << nested_keys(key, value) }
-#   left = arr.first
-#   right = arr.last
-#   deep_merge(left, right)
-# end
-#
-# def nested_keys(keys, value = nil)
-#   return value if keys.empty?
-#   hash = Hash.new
-#   primary = keys.shift
-#   hash[primary] = nested_keys(keys, value)
-#   hash
-# end
-#
-# def parse_key(key)
-#   key.split(/\]\[|\[|\]/)
-# end
-#
-# def deep_merge(hash1, hash2)
-#   hash1.keys.each do |key|
-#     if hash1[key].is_a? Hash
-#       hash2[key] = deep_merge(hash1[key], hash2[key])
-#     else
-#       hash2[key] ||= hash1[key]
-#     end
-#   end
-#   return hash2
-# end

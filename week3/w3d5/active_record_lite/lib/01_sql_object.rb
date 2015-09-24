@@ -5,7 +5,6 @@ require 'byebug'
 # of this project. It was only a warm up.
 
 class SQLObject
-
   def self.columns
     table = table_name
     query = DBConnection.execute2(<<-SQL)
@@ -21,12 +20,12 @@ class SQLObject
     end
   end
 
-  def self.table_name=(table_name)
-    @table_name = table_name
+  class << self
+    attr_writer :table_name
   end
 
   def self.table_name
-    @table_name ||= self.to_s.tableize
+    @table_name ||= to_s.tableize
   end
 
   def self.all
@@ -39,7 +38,7 @@ class SQLObject
   def self.parse_all(results)
     parsed = []
     results.each do |hash|
-      parsed << self.new(hash)
+      parsed << new(hash)
     end
     parsed
   end
@@ -53,8 +52,8 @@ class SQLObject
 
   def initialize(params = {})
     params.each do |attr_name, value|
-      raise "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name.to_sym)
-      self.send("#{attr_name}=", value)
+      fail "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name.to_sym)
+      send("#{attr_name}=", value)
     end
   end
 
@@ -69,19 +68,19 @@ class SQLObject
   def insert
     col_names = self.class.columns.drop(1).join(', ')
     n = self.class.columns.drop(1).count
-    question_marks = (["?"] * n).join(', ')
+    question_marks = (['?'] * n).join(', ')
     query = DBConnection.execute(<<-SQL, *attribute_values)
       INSERT INTO
         #{self.class.table_name} (#{col_names})
       VALUES
         (#{question_marks})
     SQL
-    self.send(:id=, DBConnection.last_insert_row_id)
+    send(:id=, DBConnection.last_insert_row_id)
   end
 
   def update
     col_names = self.class.columns
-    col_names.map! { |col_name| "#{col_name} = ?" if attributes.include?(col_name)}
+    col_names.map! { |col_name| "#{col_name} = ?" if attributes.include?(col_name) }
     col_names = col_names.join(', ')
 
     query = DBConnection.execute(<<-SQL, *attribute_values)
@@ -90,7 +89,7 @@ class SQLObject
       SET
         #{col_names}
       WHERE
-        id = #{self.id}
+        id = #{id}
     SQL
     query
   end

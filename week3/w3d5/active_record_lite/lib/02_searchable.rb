@@ -7,7 +7,7 @@ module Searchable
     fill_ins = params.keys.map { |key| "#{key} = ?" }.join(' AND ')
     value = params.values
     query = DBConnection.execute(<<-SQL, *value)
-      SELECT * FROM #{self.table_name} WHERE #{fill_ins}
+      SELECT * FROM #{table_name} WHERE #{fill_ins}
     SQL
     parse_all(query)
   end
