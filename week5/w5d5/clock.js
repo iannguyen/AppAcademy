@@ -23,10 +23,9 @@ Clock.prototype.run = function () {
 
 Clock.prototype._tick = function () {
   // 1. Increment the timeNow.
-  var that = this;
-  this.timeNow.setSeconds(that.timeNow.getSeconds() + Clock.TICK/1000);
+  this.timeNow.setSeconds(this.timeNow.getSeconds() + Clock.TICK/1000);
   // 2. Call printTime.
-  return this.printTime();
+  this.printTime();
 };
 
 var clock = new Clock();
