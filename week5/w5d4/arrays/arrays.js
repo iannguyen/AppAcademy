@@ -28,7 +28,7 @@ Array.prototype.twosum = function() {
 
 Array.prototype.transpose = function() {
   var arr = [];
-  for (var k = 0; k < this.length; k++) {
+  for (var k = 0; k < this[0].length; k++) {
     arr.push([]);
   }
   for (var i = 0; i < this.length; i++){
@@ -39,4 +39,4 @@ Array.prototype.transpose = function() {
   return arr;
 };
 
-// console.log([[0, 1, 2],[3, 4, 5],[6, 7, 8]].transpose());
+console.log([[0, 1, 2],[3, 4, 5]].transpose());
