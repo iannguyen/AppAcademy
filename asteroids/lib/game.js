@@ -2,7 +2,7 @@ if (typeof Asteroids === 'undefined') {
   window.Asteroids = {};
 }
 
-var STARTASTEROIDS = 1;
+var STARTASTEROIDS = 10;
 
 var Game = window.Asteroids.Game = function () {
   this.asteroids = [];
@@ -11,7 +11,7 @@ var Game = window.Asteroids.Game = function () {
   this.allObjects = this.asteroids.concat(this.ship);
 };
 
-Game.prototype.addAsteroids = function (ctx) {
+Game.prototype.addAsteroids = function() {
   for (var i = 0; i < STARTASTEROIDS; i++) {
     var pos = [];
     pos[0] = Math.random() * window.innerWidth;
@@ -52,8 +52,8 @@ Game.prototype.checkCollisions = function(ctx, interval){
       if (this.asteroids[i].collideWith(this.bullets[j])) {
         this.asteroids[i].blowUp(ctx);
         this.asteroids.splice(i);
-        // var index = this.allObjects.indexOf(this.asteroids[i]);
-        // this.allObjects[index] = null;
+        var index = this.allObjects.indexOf(this.asteroids[i]);
+        this.allObjects.splice(index);
       }
     }
     //we have ghost asteroids roaming around after their death.
@@ -64,8 +64,7 @@ Game.prototype.checkCollisions = function(ctx, interval){
 
 Game.prototype.gameOver = function(ctx){
   this.allObjects = [];
-  // ctx.fillStyle = "#000000";
   ctx.fillStyle = "white";
-  ctx.font = "italic "+96+"pt Arial ";
+  ctx.font = "italic "+80+"pt Arial ";
   ctx.fillText("Game Over", 114,167);
 };

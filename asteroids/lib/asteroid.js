@@ -8,8 +8,13 @@ var COLOR = ["#00FF00", "#0000FF", "#C0C0C0", "#FFFF00", "#800080", "#FF00FF"];
 var RADIUS = 25;
 A.Asteroid = function(pos, radius){
   var that = this;
-  A.MovingObject.call(this, pos, A.Util.randomVector(),
-    RADIUS, COLOR[Math.floor(Math.random()*COLOR.length)]);
+  var options = {
+    pos: pos,
+    vel: A.Util.randomVector(),
+    radius: radius || RADIUS,
+    color: COLOR[Math.floor(Math.random()*COLOR.length)]
+  };
+  A.MovingObject.call(that, options);
 };
 A.Util.inherits(A.Asteroid, A.MovingObject);
 
@@ -21,4 +26,7 @@ A.Asteroid.prototype.collideWith = function(object){
 
 A.Asteroid.prototype.blowUp = function(ctx){
     this.color = "#000000";
+    this.radius = 0;
+    this.pos = [-1,-1];
+    this.vel = 0;
 };

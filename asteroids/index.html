@@ -13,22 +13,13 @@
   </head>
   <body>
     <script src="keymaster.js"></script>
-    <canvas></canvas>
+    <canvas id="canvas"></canvas>
     <script>
-    var canvasEl = document.getElementsByTagName("canvas")[0];
-    setInterval(function(){
-      if(canvasEl.height !== window.innerHeight || canvasEl.width !== window.innerWidth){
-      canvasEl.height = window.innerHeight;
-      canvasEl.width = window.innerWidth;
-      }
-    }, 1000/ 60 )
-    ctx = canvasEl.getContext("2d")
-
+    var canvasEl = document.getElementById("canvas");
     var game = new window.Asteroids.Game ();
-    game.addAsteroids(ctx);
-    var view = new window.Asteroids.GameView(game, ctx);
+    game.addAsteroids(canvasEl);
+    var view = new window.Asteroids.GameView(game, canvasEl);
     view.start();
-    view.bindKeyHandlers(game);
     </script>
   </body>
 </html>
