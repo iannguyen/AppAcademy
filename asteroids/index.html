@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src ="./lib/utils.js" type="text/javascript"></script>
+    <script src ="./lib/movingObject.js" type="text/javascript"></script>
+    <script src ="./lib/asteroid.js" type="text/javascript"></script>
+    <script src ="./lib/bullet.js" type="text/javascript"></script>
+    <script src ="./lib/game.js" type="text/javascript"></script>
+    <script src ="./lib/gameView.js" type="text/javascript"></script>
+    <script src ="./lib/ship.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <script src="keymaster.js"></script>
+    <canvas></canvas>
+    <script>
+    var canvasEl = document.getElementsByTagName("canvas")[0];
+    setInterval(function(){
+      if(canvasEl.height !== window.innerHeight || canvasEl.width !== window.innerWidth){
+      canvasEl.height = window.innerHeight;
+      canvasEl.width = window.innerWidth;
+      }
+    }, 1000/ 60 )
+    ctx = canvasEl.getContext("2d")
+
+    var game = new window.Asteroids.Game ();
+    game.addAsteroids(ctx);
+    var view = new window.Asteroids.GameView(game, ctx);
+    view.start();
+    view.bindKeyHandlers(game);
+    </script>
+  </body>
+</html>
