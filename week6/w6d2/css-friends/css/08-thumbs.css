@@ -1,0 +1,23 @@
+/* PHASE 8: Thumbs */
+
+.friends {
+  display: block;
+  position: relative;
+  left: 6px;
+  right: 10px;
+  width: 200px;
+}
+
+.friends li {
+  display: block;
+  vertical-align: top;
+  float: left;
+  padding: 5px;
+}
+
+.friends img {
+  width: 55px;
+  display: block;
+  border-radius: 9px;
+  border: 1px solid black;
+}
