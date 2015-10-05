@@ -1,0 +1,26 @@
+.grid {
+  width: 900px;
+  height: 900px;
+}
+
+.square li {
+  float: left;
+  border: 1px solid black;
+  width: 250px;
+  height: 250px;
+  background-color: grey;
+  list-style: none;
+  font-size: 120px;
+  text-align: center;
+  line-height: 250px;
+}
+
+.square li:hover {
+  background-color: yellow;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  clear: both;
+}
