@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../js/jquery-2.1.4.js"></script>
+    <script src="../js/tabs.js"></script>
+    <link href="../css/tabs.css" rel="stylesheet" type="text/css" />
+    <title>My Cool Website</title>
+  </head>
+
+  <body>
+    <ul class='tabs' data-content-tabs="">
+      <li><a href="puggle" class="active">puggle</a></li>
+      <li><a href="labradoodle">labradoodle</a></li>
+      <li><a href="huskihuahua">huskihuahua</a></li>
+    </ul>
+    <section class="content-tabs">
+      <article id="puggle" class="active"> <p>Puggles make Ian scratch his neck with pain and love</p> </article>
+      <article id="labradoodle"> <p>David loves labradoodles because they are nice and big and fluffy.</p> </article>
+      <article id="huskihuahua"> <p>even more dog stuff</p> </article>
+    </section>
+    <script>
+      $(function() {
+        $(".tabs").tabs();
+        // $('.tabs').on("click", "a", $.tabs());
+      })
+    </script>
+  </body>
+</html>
