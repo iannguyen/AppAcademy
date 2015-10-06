@@ -1,0 +1,28 @@
+.board {
+  width: 450px;
+  height: 460px;
+}
+
+.tile {
+  width: 20px;
+  height: 20px;
+  background-color: #eee;
+  float: left;
+  border: black solid 1px;
+}
+
+.flagged {
+
+}
+
+.bombed {
+
+}
+
+.unexplored {
+
+}
+
+.empty {
+
+}
