@@ -89,8 +89,8 @@
     return (
       pos[0] >= 0 && pos[0] < this.gridSize &&
         pos[1] >= 0 && pos[1] < this.gridSize
-    )
-  }
+    );
+  };
 
   Board.prototype.plantBombs = function () {
     var totalPlantedBombs = 0;
