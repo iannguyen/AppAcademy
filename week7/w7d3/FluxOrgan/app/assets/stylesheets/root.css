@@ -1,0 +1,13 @@
+#content {
+  width: 1000px;
+  height: 800px;
+  margin: auto;
+  display: block;
+}
+
+div {
+  text-align: center;
+  float: left;
+  display: block;
+  margin:auto;
+}

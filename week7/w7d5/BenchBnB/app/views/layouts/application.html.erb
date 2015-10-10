@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BenchBnB</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<!-- Google Maps API -->
+  <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBua1dfIL0qkNgxUcNYwqtv3eW_jDiK1fk">
+  </script>
+
+<%= yield %>
+
+</body>
+</html>
