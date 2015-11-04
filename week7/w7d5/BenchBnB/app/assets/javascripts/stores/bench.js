@@ -2,7 +2,7 @@
   'use strict';
 
   var _benches = [];
-  var CHANGE_EVENT = "CHANGE'";
+  var CHANGE_EVENT = "CHANGE";
 
   var resetBenches = function (benches) {
     _benches = benches;
@@ -10,7 +10,7 @@
 
   root.BenchStore = $.extend({}, EventEmitter.prototype, {
     all: function () {
-      return _benches.slice(0);
+      return _benches.slice();
     },
 
     changed: function() {
@@ -29,6 +29,10 @@
       switch (payload.actionType){
         case BenchConstants.BENCHES_RECEIVED:
           resetBenches(payload.benches);
+          BenchStore.changed();
+          break;
+        case BenchConstants.BENCH_RECEIVED:
+          _benches.push(payload.bench);
           BenchStore.changed();
           break;
       }

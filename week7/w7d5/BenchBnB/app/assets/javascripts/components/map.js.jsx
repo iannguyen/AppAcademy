@@ -1,9 +1,10 @@
 var Map = React.createClass({
   getInitialState: function () {
-    return { markers: [], bounds: [] };
+    return { markers: [], filters: [] };
   },
 
   componentDidMount: function () {
+    var that = this;
     var map = React.findDOMNode(this.refs.map);
     var mapOptions = {
       center: { lat: 37.7758, lng: -122.435 },
@@ -12,14 +13,20 @@ var Map = React.createClass({
     this.map = new google.maps.Map(map, mapOptions);
     BenchStore.addChangeListener(this._onChange);
     this.renderMarkers();
+    this.map.addListener('click', function(e) {
+      var clickedLat = e.latLng.lat();
+      var clickedLng = e.latLng.lng();
+      var coords = {lat: clickedLat, lng: clickedLng};
+      that.props.handleMapClick(coords);
+    });
   },
 
   getMapBounds: function () {
     var bounds = this.map.getBounds();
-    var north = bounds.getNorthEast().J;
-    var south = bounds.getSouthWest().J;
-    var east = bounds.getNorthEast().M;
-    var west = bounds.getSouthWest().M;
+    var north = bounds.O.j;
+    var south = bounds.O.O;
+    var east = bounds.j.O;
+    var west = bounds.j.j;
     var limits = {boundaries: {north: north, south: south, east: east, west: west}};
     return limits;
   },
@@ -29,6 +36,10 @@ var Map = React.createClass({
   },
 
   _onChange: function () {
+    this.state.markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    this.setState({markers: []});
     this.benches = BenchStore.all();
     this.generateMapMarkers();
   },
@@ -65,6 +76,8 @@ var Map = React.createClass({
     return (
       <div className='map' ref='map'>
         Map should be here.
+
+
       </div>
     );
   }

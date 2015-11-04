@@ -6,6 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-bench1 = Bench.create!({description: "Beautiful bench in Inner Sunset", lat: 37.762275, lng: -122.470999})
-bench2 = Bench.create!({description: "Ugly bench in T-Loin", lat: 37.783387, lng: -122.417301})
-bench3 = Bench.create!({description: "This bench can fit a Full House", lat: 37.775551, lng: -122.432665})
+bench1 = Bench.create!({description: "Beautiful bench in Inner Sunset", lat: 37.762275, lng: -122.470999, seating: 3})
+bench2 = Bench.create!({description: "Ugly bench in T-Loin", lat: 37.783387, lng: -122.417301, seating: 2})
+bench3 = Bench.create!({description: "This bench can fit a Full House", lat: 37.775551, lng: -122.432665, seating: 5})

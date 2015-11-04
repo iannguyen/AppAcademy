@@ -19,7 +19,7 @@ var Index = React.createClass ({
 var routes = (
   <Route path="/" component={Index}>
     <Route path="pokemon/:pokemonId" components={{pokemonDetail: PokemonDetail, toys: ToysIndex}}  ></Route>
-    <Route path="pokemon/:pokemonId/toys/:toyId" component={ToyDetail}></Route>
+    <Route path="pokemon/:pokemonId/toys/:toyId" components={{pokemonDetail: PokemonDetail, toyDetail: ToyDetail}}></Route>
   </Route>
 
 );

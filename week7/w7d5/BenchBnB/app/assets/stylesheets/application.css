@@ -13,9 +13,64 @@
  *= require_tree .
  *= require_self
  */
- 
- .map {
-   width: 500px;
-   height: 500px;
-   background-color: yellow;
- }
+
+body {
+  width: 100%;
+  margin: auto;
+  background-image: url('http://images.alphacoders.com/282/282163.jpg');
+  padding-bottom: 100px;
+}
+
+.map {
+  margin: 0px auto;
+  width: 90%;
+  height: 500px;
+  background-color: yellow;
+  border-radius: 25px;
+}
+
+div header  {
+  width: 100%;
+  margin: 0px auto;
+  text-align: center;
+  background-color: rgba(255,255,255,0.7);
+  font-family: cursive;
+  font-size: 40px;
+  border-radius: 5px;
+}
+
+div .description {
+  margin: 0px, auto;
+  text-align: center;
+  width: 100%;
+  font-family: cursive;
+  font-size: 20px;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.7);
+}
+
+li {
+  margin: 5px;
+  list-style-type: none;
+}
+
+form.bench {
+  margin: auto;
+  text-align: center;
+}
+
+form.bench label, input {
+  font-size: 20px;
+  width: 30%;
+  text-align: center;
+  height: 50px;
+}
+
+label {
+  color: ivory;
+}
+
+textarea {
+  width: 50%;
+  height: 100px;
+}

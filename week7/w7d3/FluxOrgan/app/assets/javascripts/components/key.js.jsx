@@ -4,6 +4,17 @@
   'use strict';
   root.Components = {};
 
+  var keyNotes = {
+    "97": "C",
+    "115": "D",
+    "100": "E",
+    "102": "F",
+    "103": "G",
+    "104": "A",
+    "106": "B",
+    "107": "C"
+  };
+
   root.Components.Key = React.createClass({
     getInitialState: function () {
       return { playing: false };
@@ -41,11 +52,15 @@
     render: function () {
       return (
           <div>
+            <ul>
             {
               Object.keys(root.TONES).map(function (note, idx) {
-                return <Components.Key key={idx} noteName={note}/>;
+                return <li className="key">
+                  <Components.Key key={idx} noteName={note}/>{keyNotes[note]}
+                  </li>;
               })
             }
+            </ul>
             <Components.Recorder />
           </div>
       );

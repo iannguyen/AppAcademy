@@ -10,9 +10,27 @@
         datatype: 'json',
         success: function (response) {
           ApiActions.receiveAll(response);
-        },
-        failure: function(response) {
-          console.log(response);
+        }
+      });
+    },
+
+    fetchSingleBench: function (id) {
+      $.ajax({
+        url: 'api/benches/' + id,
+        success: function (response) {
+          ApiActions.receiveSingleBench(response);
+        }
+      });
+    },
+
+    createBench: function(bench) {
+      $.ajax({
+        url: 'api/benches',
+        method: 'post',
+        data: {bench: bench},
+        datatype: 'json',
+        success: function(response) {
+          ApiActions.receiveSingleBench(response);
         }
       });
     }
